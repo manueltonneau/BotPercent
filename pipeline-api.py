@@ -12,8 +12,10 @@ import numpy as np
 import tqdm
 import argparse
 import os
-os.environ['http_proxy'] = 'http://127.0.0.1:15236'
-os.environ['https_proxy'] = 'http://127.0.0.1:15236' 
+import pandas as pd
+# os.environ['http_proxy'] = 'http://127.0.0.1:15236'
+# os.environ['https_proxy'] = 'http://127.0.0.1:15236'
+# os.environ['CURL_CA_BUNDLE'] = ''
 
 parser = argparse.ArgumentParser(description="Bot Percentage API")
 parser.add_argument("--username", type=str, default=None)
@@ -22,19 +24,19 @@ parser.add_argument("--device", type=str, default='cpu')
 args = parser.parse_args()
 online=True
 
-with open("api.json") as f:
-    api = json.load(f)
+# with open("api.json") as f:
+#     api = json.load(f)
     
-api = api[0]
-api_key = api["key"]
-api_secret = api["key_secret"]
-access_token = api["access_token"]
-access_token_secret = api["access_token_secret"]
-bearer_token = api["bearer_token"]
+# api = api[0]
+# api_key = api["key"]
+# api_secret = api["key_secret"]
+# access_token = api["access_token"]
+# access_token_secret = api["access_token_secret"]
+# bearer_token = api["bearer_token"]
 
-auth = tweepy.OAuthHandler(api_key, api_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth, proxy="127.0.0.1:15236", wait_on_rate_limit=True)
+# auth = tweepy.OAuthHandler(api_key, api_secret)
+# auth.set_access_token(access_token, access_token_secret)
+# api = tweepy.API(auth, proxy="127.0.0.1:15236", wait_on_rate_limit=True)
 
 with open("./checkpoint/RandomForest.pkl", 'rb') as f:
     RF = pickle.load(f)
@@ -95,20 +97,16 @@ t5_extract = pipeline('feature-extraction',
                         max_length=50, 
                         add_special_tokens = True)
 
-def detect(username):
-    
-    timeline = api.user_timeline(
-        screen_name=username,
-        tweet_mode='extended',
-        count=20
-    )
+def detect(user):
+    #TODO load tweets
+    timeline = []
 
-    if len(timeline)==0:
-        user = api.get_user(screen_name=username)
-        single = True
-    else:
-        user = timeline[0]
-        single = False
+    # if len(timeline)==0:
+    #     user = api.get_user(screen_name=username)
+    #     single = True
+    # else:
+    #     user = timeline[0]
+    single = False
 
     upper, lower = uf.upper_lower_username_cnt(user, online, single)
     entropy = uf.ShannonEntropyAndNomalize(user, online, single)
@@ -212,4 +210,6 @@ def detect(username):
         print("Bot!")
     print('-'*100)
 
-detect(args.username)
+df = pd.read_parquet('/home/manuel/Downloads/13042023/part-00047-8596fff3-6530-4440-b755-ce801021c4f6-c000.snappy.parquet')
+dict_list = df.to_dict('records')
+detect(dict_list[0])
