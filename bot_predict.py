@@ -92,7 +92,7 @@ if __name__ == '__main__':
     input_files_list = list(Path(path_data).glob('*.parquet'))
     # define env var
     SLURM_JOB_ID = get_env_var('SLURM_JOB_ID', 0)
-    SLURM_ARRAY_TASK_COUNT = get_env_var('SLURM_ARRAY_TASK_COUNT', len(bearer_token_list))
+    SLURM_ARRAY_TASK_COUNT = get_env_var('SLURM_ARRAY_TASK_COUNT', 1)
     SLURM_ARRAY_TASK_ID = get_env_var('SLURM_ARRAY_TASK_ID', 0)
     # define path list
     parquet_path_list = list(np.array_split(
