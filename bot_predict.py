@@ -97,10 +97,11 @@ if __name__ == '__main__':
     parquet_path_list = list(np.array_split(
         input_files_list,
         SLURM_ARRAY_TASK_COUNT)[SLURM_ARRAY_TASK_ID])
+    print(f'# parquets files allocated: {len(parquet_path_list)}')
     # load model
     with open("./checkpoint/RandomForest.pkl", 'rb') as f:
         RF = pickle.load(f)
-
+    print('loaded RF')
     output_path = '/scratch/mt4493/bot_detection/results'
     if not os.path.exists(output_path):
         os.makedirs(output_path, exist_ok=True)
@@ -108,9 +109,13 @@ if __name__ == '__main__':
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
     for path in parquet_path_list:
+        print(f'loading {path}')
         df = pd.read_parquet(path)
+        print(f'loaded data. shape: {df.shape[0]}')
         bot_pred = list()
         for i, user in enumerate(df.to_dict('records')):
+            if i % 100 == 0:
+                print(i)
             bot_pred.append(detect(user)[0][1])
         df['bot_pred'] = bot_pred
         df.to_parquet(os.path.join(output_folder, path.name), index=False)
