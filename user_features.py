@@ -7,7 +7,7 @@ def status_cnt(user, online=False, single=False, preprocessed=True):
     elif single:
         return user._json['statuses_count']
     if preprocessed:
-        return user['user_statuses_count']
+        return user['statuses_count']
     else:
         return user._json['user']['statuses_count']
     
@@ -17,7 +17,7 @@ def followers_cnt(user, online=False, single=False, preprocessed=True):
     if single:
         return user._json['followers_count']
     if preprocessed:
-        return user['user_followers_count']
+        return user['followers_count']
     else:
         return user._json['user']['followers_count']
     
@@ -27,7 +27,7 @@ def following_cnt(user, online=False, single=False, preprocessed=True):
     elif single:
         return user._json['friends_count']
     if preprocessed:
-        return user['user_friends_count']
+        return user['friends_count']
     else:
         return user._json['user']['friends_count']
     
@@ -37,7 +37,7 @@ def listed_cnt(user, online=False, single=False, preprocessed=True):
     elif single:
         return user._json['listed_count']
     if preprocessed:
-        return 0
+        return user['listed_count']
     else:
         return user._json['user']['listed_count']
     
@@ -49,7 +49,7 @@ def default_profile_image(user, online=False, single=False, preprocessed=True):
         result = int(user._json['profile_image_url'].find('default_profile_normal') == -1)
         return result
     if preprocessed:
-        result = int(user['user_profile_image_url_https'].find('default_profile_normal') == -1)
+        result = int(user['profile_image_url'].find('default_profile_normal') == -1)
         return result
     else:
         result = int(user._json['user']['profile_image_url'].find('default_profile_normal') == -1)
@@ -61,7 +61,7 @@ def is_verified(user, online=False, single=False, preprocessed=True):
     elif single:
         return int(user._json['verified'])
     if preprocessed:
-        return int(user['user_verified'])
+        return int(user['verified'])
     else:
         return int(user._json['user']['verified'])
     
@@ -71,7 +71,7 @@ def get_user_id(user, online=False, single=False, preprocessed=True):
     elif single:
         return int(user._json['id'])
     if preprocessed:
-        return int(user['user_id'])
+        return int(user['id'])
     else:
         return int(user._json['user']['id'])
     
@@ -81,7 +81,7 @@ def get_username(user, online=False, single=False, preprocessed=True):
     elif single:
         return user._json['screen_name']
     if preprocessed:
-        return user['user_screen_name']
+        return user['screen_name']
     else:
         return user._json['user']['screen_name']
     
@@ -91,7 +91,7 @@ def get_screen_name(user, online=False, single=False, preprocessed=True):
     elif single:
         return user._json['name']
     if preprocessed:
-        return user['user_name']
+        return user['name']
     else:
         return user._json['user']['name']
     
@@ -101,7 +101,7 @@ def has_description(user, online=False, single=False, preprocessed=True):
     elif single:
         des = user._json['description']
     if preprocessed:
-        des = user['user_description']
+        des = user['description']
     else:
         des = user._json['user']['description']
         
@@ -116,7 +116,7 @@ def protected(user, online=False, single=False, preprocessed=True):
     elif single:
         return int(user._json['protected'])
     if preprocessed:
-        return int(user['user_protected'])
+        return int(user['protected'])
     else:
         return int(user._json['user']['protected'])
     
@@ -136,7 +136,7 @@ def get_digits_screen_name(user, online=False, single=False, preprocessed=True):
     elif single:
         name = user._json['name']
     if preprocessed:
-        name = user['user_name']
+        name = user['name']
     else:
         name = user._json['user']['name']
         
@@ -152,7 +152,7 @@ def get_digits_username(user, online=False, single=False, preprocessed=True):
     elif single:
         name = user._json['screen_name']
     if preprocessed:
-        name = user['user_screen_name']
+        name = user['screen_name']
     else:
         name = user._json['user']['screen_name']
 
@@ -168,7 +168,7 @@ def has_location(user, online=False, single=False, preprocessed=True):
     elif single:
         location = user._json['location']
     if preprocessed:
-        location = user['user_location']
+        location = user['location']
     else:
         location = user._json['user']['location']
         
@@ -177,7 +177,7 @@ def has_location(user, online=False, single=False, preprocessed=True):
     else:
         return 1
 
-def num_of_hashtags(user, online=False, single=False):
+def num_of_hashtags(user, online=False, single=False, preprocessed=True):
     
     try:
         if not online:  
@@ -195,7 +195,6 @@ def num_of_URLs(user, online=False, single=False):
             return len(user._json['entities']['description']['urls'])
         else:
             return len(user._json['user']['entities']['description']['urls'])
-        
     except:
         return 0
     
@@ -205,7 +204,7 @@ def has_url(user, online=False, single=False, preprocessed=True):
     elif single:
         url = user._json['url']
     if preprocessed:
-        url = user['user_url']
+        url = user['url']
     else:
         url = user._json['user']['url']
         
@@ -221,7 +220,7 @@ def user_age(user, dataset="Twibot-22", online=False, single=False, preprocessed
     elif single:
         created_at = user._json['created_at']
     if preprocessed:
-        created_at = 'Wed Oct 10 20:19:24 +0000 2018'
+        created_at = user['created_at']#'Wed Oct 10 20:19:24 +0000 2018'
     else:
         created_at = user._json['user']['created_at']
         
@@ -262,7 +261,7 @@ def has_bot_word_in_description(user, online=False, single=False, preprocessed=T
         elif single:
             matchObj = re.search('bot', user._json['description'], flags=re.IGNORECASE)
         if preprocessed:
-            matchObj = re.search('bot', user['user_description'], flags=re.IGNORECASE)
+            matchObj = re.search('bot', user['description'], flags=re.IGNORECASE)
         else:
             matchObj = re.search('bot', user._json['user']['description'], flags=re.IGNORECASE)
         if matchObj:
@@ -323,7 +322,7 @@ def get_description_length(user, online=False, single=False, preprocessed=True):
         elif single:
             return len(user._json['description'])
         if preprocessed:
-            return len(user['user_description'])
+            return len(user['description'])
         else:
             return len(user._json['user']['description'])
     else:
@@ -336,7 +335,7 @@ def get_followees(user, online=False, single=False, preprocessed=True):
     elif single:
         following_count = user._json['friends_count']
     if preprocessed:
-        following_count = user['user_friends_count']
+        following_count = user['friends_count']
     else:
         following_count = user._json['user']['friends_count']
     
@@ -352,7 +351,7 @@ def get_followers(user, online=False, single=False, preprocessed=True):
     elif single:
         followers_count = user._json['followers_count']
     if preprocessed:
-        following_count = user['user_followers_count']
+        following_count = user['followers_count']
     else:
         followers_count = user._json['user']['followers_count']
         
@@ -367,7 +366,7 @@ def upper_lower_username_cnt(user, online=False, single=False, preprocessed=True
     elif single:
         str1 = user._json['screen_name']
     if preprocessed:
-        str1 = user['user_screen_name']
+        str1 = user['screen_name']
     else:
         str1 = user._json['user']['screen_name']
         
@@ -388,7 +387,7 @@ def upper_lower_screen_name_cnt(user, online=False, single=False, preprocessed=T
     elif single:
         str1 = user._json['name']
     if preprocessed:
-        str1 = user['user_name']
+        str1 = user['name']
     else:
         str1 = user._json['user']['name']
         
@@ -412,8 +411,8 @@ def get_followers_followees(user, online=False, single=False, preprocessed=True)
         followers_count = user._json['followers_count']
         following_count = user._json['friends_count']
     if preprocessed:
-        followers_count = user['user_followers_count']
-        following_count = user['user_friends_count']
+        followers_count = user['followers_count']
+        following_count = user['friends_count']
     else:
         followers_count = user._json['user']['followers_count']
         following_count = user._json['user']['friends_count']
@@ -449,7 +448,7 @@ def hashtags_count_in_username(user, online=False, single=False, preprocessed=Tr
     elif single:
         username = user._json['screen_name']
     if preprocessed:
-        username = user['user_screen_name']
+        username = user['screen_name']
     else:
         username = user._json['user']['screen_name']
         
@@ -467,7 +466,7 @@ def hashtags_count_in_description(user, online=False, single=False, preprocessed
         elif single:
             hashtags = re.findall(r'#\w', user._json['description'])
         if preprocessed:
-            hashtags = re.findall(r'#\w', user['user_description'])
+            hashtags = re.findall(r'#\w', user['description'])
         else:
             hashtags = re.findall(r'#\w', user._json['user']['description'])
 
@@ -483,7 +482,7 @@ def urls_count_in_description(user, online=False, single=False, preprocessed=Tru
         elif single:
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', user._json["description"])
         if preprocessed:
-            urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', user["user_description"])
+            urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', user["description"])
         else:
             urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', user._json['user']["description"])
         return len(urls)
@@ -496,7 +495,7 @@ def def_image(user, online=False, single=False, preprocessed=True):
     elif single:
         img = user._json['profile_image_url']
     if preprocessed:
-        img = user['user_profile_image_url_https']
+        img = user['profile_image_url']
     else:
         img = user._json['user']['profile_image_url']
         
@@ -515,9 +514,9 @@ def def_profile(user, online=False, single=False, preprocessed=True):
         loca = user._json['location']
         url = user._json['url']
     if preprocessed:
-        des = user['user_description']
-        loca = user['user_location']
-        url = user['user_url']
+        des = user['description']
+        loca = user['location']
+        url = user['url']
     else:
         des = user._json['user']['description']
         loca = user._json['user']['location']
@@ -536,7 +535,7 @@ def tweet_freq(user, online=False, single=False, preprocessed=True):
         elif single:
             freq = float(user._json['statuses_count'])/user_age(user, online, single)
         if preprocessed:
-            freq = float(user['user_statuses_count'])/user_age(user, online, single)
+            freq = float(user['statuses_count'])/user_age(user, online, single)
         else:
             freq = float(user._json['user']['statuses_count'])/user_age(user, online, single)
     except:
@@ -551,7 +550,7 @@ def followers_growth_rate(user, online=False, single=False, preprocessed=True):
             rate = float(user._json['followers_count'])/user_age(user, online, single)
             return rate
         if preprocessed:
-            rate = float(user['user_followers_count'])/user_age(user, online, single)
+            rate = float(user['followers_count'])/user_age(user, online, single)
             return rate
         else:
             rate = float(user._json['user']['followers_count'])/user_age(user, online, single)
@@ -568,7 +567,7 @@ def friends_growth_rate(user, online=False, single=False, preprocessed=True):
             rate = float(user._json['friends_count'])/user_age(user, online, single)
             return rate
         if preprocessed:
-            rate = float(user['user_friends_count'])/user_age(user, online, single)
+            rate = float(user['friends_count'])/user_age(user, online, single)
             return rate
         else:
             rate = float(user._json['user']['friends_count'])/user_age(user, online, single)
@@ -584,7 +583,7 @@ def ShannonEntropyAndNomalize(user, online=False, single=False, preprocessed=Tru
     elif single:
         name = user._json['name']
     if preprocessed:
-        name = user['user_name']
+        name = user['name']
     else:
         name = user._json['user']['name']
         
@@ -632,8 +631,8 @@ def lev_distance_username_screen_name(user, online=False, single=False, preproce
         name = user._json['name']
         screen_name = user._json['screen_name']
     if preprocessed:
-        name = user['user_name']
-        screen_name = user['user_screen_name']
+        name = user['name']
+        screen_name = user['screen_name']
     else:
         name = user._json['user']['name']
         screen_name = user._json['user']['screen_name']
@@ -646,7 +645,7 @@ def screen_name_unicode_group(user, online=False, single=False, preprocessed=Tru
     elif single:
         word = user._json['name']
     if preprocessed:
-        word = user['user_name']
+        word = user['name']
 
     else:
         word = user._json['user']['name']
@@ -672,7 +671,7 @@ def des_sentiment_score(user, online=False, single=False, preprocessed=True):
     elif single:
         text = user._json['description']
     if preprocessed:
-        text = user['user_description']
+        text = user['description']
     else:
         text = user._json['user']['description']
     score = SentimentIntensityAnalyzer().polarity_scores(text)['compound']
@@ -686,7 +685,7 @@ def POS_feature(user, online=False, single=False, preprocessed=True):
     elif single:
         text = user._json['description']
     if preprocessed:
-        text = user['user_description']
+        text = user['description']
     else:
         text = user._json['user']['description']
         
@@ -724,7 +723,7 @@ def get_des_embedding(user, pipeline, dim=768, single=False, preprocessed=True):
     # if not single:
     #     description = user._json['user']['description']
     if preprocessed:
-        description = user['user_description']
+        description = user['description']
     else:
         description = user._json['description']
     # feature_extract = pipeline('feature-extraction',
@@ -777,8 +776,8 @@ def get_cat_feat(user, single=False, preprocessed=True):
         protect = user._json['protected']
         verified = user._json['verified']
     if preprocessed:
-        protect = user['user_protected']
-        verified = user['user_verified']
+        protect = user['protected']
+        verified = user['verified']
     else:
         protect = user._json['user']['protected']
         verified = user._json['user']['verified']
