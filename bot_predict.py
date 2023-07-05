@@ -117,6 +117,10 @@ if __name__ == '__main__':
         for i, user in enumerate(df.to_dict('records')):
             if i % 100 == 0:
                 print(i)
-            bot_pred.append(detect(user)[0][1])
+            try:
+                pred = detect(user)[0][1]
+                bot_pred.append(pred)
+            except Exception as e:
+                print(e)
         df['bot_pred'] = bot_pred
         df.to_parquet(os.path.join(output_folder, path.name), index=False)
