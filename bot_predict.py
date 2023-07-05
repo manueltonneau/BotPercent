@@ -72,7 +72,7 @@ def detect(user):
         uf.lev_distance_username_screen_name(user, online, single),
         entropy
     ]
-    print(len(single_feature))
+    # print(len(single_feature))
 
     single_feature = np.array(single_feature).reshape(1,-1)
 #     t5_des = uf.get_des_embedding(user, t5_extract, 512, single)
