@@ -122,5 +122,6 @@ if __name__ == '__main__':
                 bot_pred.append(pred)
             except Exception as e:
                 print(e)
+                bot_pred.append(None)
         df['bot_pred'] = bot_pred
         df.to_parquet(os.path.join(output_folder, path.name), index=False)
