@@ -83,7 +83,7 @@ def detect(user, complete=False):
     if not complete:
         single_feature = np.array(single_feature).reshape(1, -1)
         RF_pred = RF.predict_proba(single_feature)
-        return RF_pred
+        return RF_pred[0][1]
     else:
         single_feature = np.array(single_feature).reshape(1, -1)
         t5_des = uf.get_des_embedding(user, t5_extract, 512, single)
@@ -144,7 +144,7 @@ def detect(user, complete=False):
 
 if __name__ == '__main__':
     user_set = 'ethnic_hate_users'
-    complete=False
+    complete=True
     path_data = os.path.join('/scratch/mt4493/bot_detection/data/user_profiles', user_set)
     input_files_list = list(Path(path_data).glob('*.parquet'))
     # define env var
@@ -218,7 +218,11 @@ if __name__ == '__main__':
     output_path = '/scratch/mt4493/bot_detection/results'
     if not os.path.exists(output_path):
         os.makedirs(output_path, exist_ok=True)
-    output_folder = os.path.join(output_path, user_set)
+    if complete:
+        output_user_set = f'{user_set}_complete'
+    else:
+        output_user_set = user_set
+    output_folder = os.path.join(output_path, output_user_set)
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
     for path in parquet_path_list:
@@ -230,7 +234,7 @@ if __name__ == '__main__':
             if i % 100 == 0:
                 print(i)
             try:
-                pred = detect(user)[0][1]
+                pred = detect(user, complete=complete)
                 bot_pred.append(pred)
             except Exception as e:
                 print(e)
