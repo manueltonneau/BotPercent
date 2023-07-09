@@ -88,7 +88,8 @@ def detect(user):
     return RF_pred
 
 if __name__ == '__main__':
-    path_data = '/scratch/mt4493/bot_detection/data/user_profiles'
+    user_set = 'ethnic_hate_users'
+    path_data = os.path.join('/scratch/mt4493/bot_detection/data/user_profiles', user_set)
     input_files_list = list(Path(path_data).glob('*.parquet'))
     # define env var
     SLURM_JOB_ID = get_env_var('SLURM_JOB_ID', 0)
@@ -106,7 +107,7 @@ if __name__ == '__main__':
     output_path = '/scratch/mt4493/bot_detection/results'
     if not os.path.exists(output_path):
         os.makedirs(output_path, exist_ok=True)
-    output_folder = os.path.join(output_path, 'NG_users')
+    output_folder = os.path.join(output_path, user_set)
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
     for path in parquet_path_list:
