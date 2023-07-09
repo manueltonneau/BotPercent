@@ -165,27 +165,27 @@ if __name__ == '__main__':
             Adaboost = pickle.load(f)
 
         mlp_hgt = MLP(5, 3, 768, 768, 1024, 0.3)
-        hgt_state = torch.load('./checkpoint/HGT.pt', map_location=args.device)
+        hgt_state = torch.load('./checkpoint/HGT.pt', map_location='cpu')
         mlp_hgt.load_state_dict(hgt_state)
 
         mlp_simplehgn = MLP(5, 3, 768, 768, 1024, 0.3)
-        simplehgn_state = torch.load('./checkpoint/SimpleHGN.pt', map_location=args.device)
+        simplehgn_state = torch.load('./checkpoint/SimpleHGN.pt', map_location='cpu')
         mlp_simplehgn.load_state_dict(simplehgn_state)
 
         mlp_rgt = MLP(5, 3, 768, 768, 1024, 0.3)
-        RGT_state = torch.load('./checkpoint/RGT.pt', map_location=args.device)
+        RGT_state = torch.load('./checkpoint/RGT.pt', map_location='cpu')
         mlp_rgt.load_state_dict(RGT_state)
 
         mlp_rgcn = MLP(5, 3, 768, 768, 1024, 0.3)
-        rgcn_state = torch.load('./checkpoint/RGCN.pt', map_location=args.device)
+        rgcn_state = torch.load('./checkpoint/RGCN.pt', map_location='cpu')
         mlp_rgcn.load_state_dict(rgcn_state)
 
         mlp_roberta = MLP_text(768, 768, 128, 0.3)
-        roberta_state = torch.load('./checkpoint/text-RoBERTa.pt', map_location=args.device)
+        roberta_state = torch.load('./checkpoint/text-RoBERTa.pt', map_location='cpu')
         mlp_roberta.load_state_dict(roberta_state)
 
         mlp_t5 = MLP_text(512, 512, 128, 0.3)
-        t5_state = torch.load('./checkpoint/text-T5.pt', map_location=args.device)
+        t5_state = torch.load('./checkpoint/text-T5.pt', map_location='cpu')
         mlp_t5.load_state_dict(t5_state)
 
         mlp_hgt.eval()
@@ -199,7 +199,7 @@ if __name__ == '__main__':
         roberta_extract = pipeline('feature-extraction',
                                    model='roberta-base',
                                    tokenizer='roberta-base',
-                                   device=args.device,
+                                   device='cpu',
                                    padding=True,
                                    truncation=True,
                                    max_length=50,
@@ -210,7 +210,7 @@ if __name__ == '__main__':
         t5_extract = pipeline('feature-extraction',
                               model=model,
                               tokenizer=tokenizer,
-                              device=args.device,
+                              device='cpu',
                               padding=True,
                               truncation=True,
                               max_length=50,
