@@ -143,7 +143,7 @@ def detect(user, complete=False):
         # print('-' * 100)
 
 if __name__ == '__main__':
-    user_set = 'ethnic_hate_users'
+    user_set = 'just_another_day'
     complete=True
     path_data = os.path.join('/scratch/mt4493/bot_detection/data/user_profiles', user_set)
     input_files_list = list(Path(path_data).glob('*.parquet'))
